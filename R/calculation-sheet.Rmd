@@ -6,7 +6,8 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results = "asis")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE, results = "asis")
 ```
 
 ```{r libraries}
@@ -16,6 +17,7 @@ library(kableExtra)
 library(knitr)
 
 ```
+
 ```{r define-functions}
 # This function will take the prior probability that each of the 
 # three possible suspects (X, J, and O (other)) are guilty as a named 
@@ -65,6 +67,7 @@ diag_ben <- function(p, l){
   return(output)
 }
 ```
+
 ```{r input_probablities}
 
 probs <- tibble::tribble(
@@ -173,33 +176,25 @@ Finally, the call made to the number only X knew while J supposedly had the phon
 
 *add descriptors to equations*
 
-\[
-P[?|lent car to J] = (P[lent car|?]*P[?]) / ((P[lent car|X]*P[X]) + (P[lent car|J]*P[J]) + (P[lent car|O]*P[O]))
-\]
 
-\[
-P[?|AFR] = (P[AFR|?]*P[?]) / ((P[AFR|X]*P[X]) + (P[AFR|J]*P[J]) + (P[AFR|O]*P[O])) 
-\]
+$$P[i|lent \; car \; to \; J] = \frac{P[lent \; car|i]*P[i]}{(P[lent \; car|X]*P[X]) + (P[lent \; car|J]*P[J]) + (P[lent \; car|O]*P[O])}$$
 
-\[
-P[?|smoked] = (P[smoked|?]*P[?]) / ((P[smoked|X]*P[X]) + (P[smoked|J]*P[J]) + (P[smoked|O]*P[O]))
-\]
 
-\[
-P[?|AATF] = (P[AATF|?]*P[?]) / ((P[AATF|X]*P[X]) + (P[AATF|J]*P[J]) + (P[AATF|O]*P[O]))
-\]
 
-\[
-P[?|phone call] = (P[phone call|?]*P[?]) / ((P[phone call|X]*P[X]) + (P[phonecall|J]*P[J]) + (P[phone call|O]*P[O]))
-\]
+$$P[i|AFR] = \frac{P[AFR|i]*P[i]}{(P[AFR|X]*P[X]) + (P[AFR|J]*P[J]) + (P[AFR|O]*P[O])}$$
 
-\[
-Diagnostic Benefit = P[evidence|?] / P[evidence|not ?]
-\]
 
-\[
-P[evidence|not ?] = (P[evidence|not?1]*P[evidence?1] + P[evidence|not?2]*P[evidence?2])/(1-P[? guilty])
-\]
+$$P[i|smoked] = \frac{P[smoked|i]*P[i]}{(P[smoked|X]*P[X]) + (P[smoked|J]*P[J]) + (P[smoked|O]*P[O])}$$
+
+
+$$P[i|AATF] = \frac{P[AATF|i]*P[i]}{(P[AATF|X]*P[X]) + (P[AATF|J]*P[J]) + (P[AATF|O]*P[O])}$$
+
+$$P[i|phone \; call] = \frac{P[phone \; call|i]*P[i]}{(P[phone \; call|X]*P[X]) + (P[phone \; call|J]*P[J]) + (P[phone \; call|O]*P[O])}$$
+
+
+$$Diagnostic \; Benefit = \frac{P[evidence|i]}{P[evidence|not \; i]}$$
+
+$$P[evidence|not \; i] = \frac{(P[evidence|not \; i_1]*P[evidence \; i_1] + P[evidence|not \; i_2]*P[evidence \; i_2]}{1-P[i \; guilty]}$$
 
 
 \newpage
