@@ -7,7 +7,8 @@ This report summarizes the uncertainty analysis that was performed to assess the
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height = 6,
-                      fig.width = 10)
+                      fig.width = 10, message = FALSE,
+                      warning = FALSE, error = FALSE)
 ```
 
 ```{r load-libraries}
@@ -200,7 +201,12 @@ sims %>%
   ggplot(aes(prob, person, fill = person)) + 
   facet_wrap(~key) + 
   ggridges::geom_density_ridges2() +
-  theme_bw()
+  theme_bw() +
+  labs(x = "Probability", 
+       y = "Suspect",
+       title = "Prior and liklihood distributions for monte carlo simulation",
+       subtitle = "Distributions were created by sampling 10,000 times from beta distribution fir to empirical CDF using minimzation optimizer") +
+  scale_fill_discrete(name = "Suspect")
 ```
 
 
@@ -223,7 +229,7 @@ monte_unnested %>%
   theme_bw() +
   labs(y = "Suspect",
        x = "Probability",
-       title = "Posterior probability distributions from Monte Carlo simulation after\nBaye's Rule is applied for each piece of evidence",
+       title = "Posterior probability distributions from Monte Carlo simulation after\nBayes' Rule is applied for each piece of evidence",
        subtitle = "Posterior estimates are based on assumption that all pieces of evidence prior are true",
        caption = "10,000 random samples from fit beta distributions were used to create prior distribution and each liklihood distribution\nbeta distributions were fit using a minimization optimizer to fit data to an empirical CDF") +
   scale_fill_discrete(name = "Suspect")
