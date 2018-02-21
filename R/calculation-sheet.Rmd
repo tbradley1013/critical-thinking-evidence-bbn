@@ -555,7 +555,21 @@ sims %>%
 
 ```
 
+```{r diagnosing-sims-fit, include = FALSE}
+probs %>% 
+  gather(key = person, value = prob, X:O) %>% 
+  mutate(perc = case_when(perc == 0.05 ~ "five", 
+                          perc == 0.5 ~ "fifty", 
+                          TRUE ~ "ninefive")) %>% 
+  left_join(sims %>% 
+              group_by(key, person) %>% 
+              summarize(five = quantile(prob, 0.05), 
+                        fifty = quantile(prob, 0.5), 
+                        ninefive = quantile(prob, 0.95)) %>% 
+              gather(key = perc, value = prob_sims, five:ninefive)) %>% 
+  mutate(diff = prob - prob_sims)
 
+```
 
 ```{r monte-results-setup}
 monte_unnested <- monte_carlo_sims %>% 
