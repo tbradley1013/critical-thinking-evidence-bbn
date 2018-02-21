@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 library(tidyverse)
 library(kableExtra)
 library(knitr)
+library(ggridges)
 
 ```
 
@@ -88,8 +89,8 @@ probs <- tibble::tribble(
   0.7, 0.35, 0.01, 0.5, "j_confessed",
   0.5, 0.2, 0.005, 0.05, "j_confessed",
   0.85, 0.6, 0.1, 0.95, "j_confessed",
-  0.1, 0.05, 0.01, 0.5, "call_x_friend",
-  0.05, 0.01, 0.005, 0.05, "call_x_friend",
+  0.1, 0.05, 0.02, 0.5, "call_x_friend",
+  0.05, 0.01, 0.01, 0.05, "call_x_friend",
   0.15, 0.1, 0.05, 0.95, "call_x_friend"
 )
 
@@ -449,13 +450,149 @@ kable(evidence_5, format = "latex", booktabs = TRUE, align = "c", col.names = ev
 
 
 # Uncertainty Analysis
-As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]
+As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]. The distributions of the random samples can be seen in \ref{fig:prior-dists}
+
+```{r ecdf-func}
+ecdf_func <- function(x, y, p){
+  sum(
+    (y - pbeta(x, p[[1]], p[[2]]))^2
+  )
+}
+```
+
+```{r monte-simulation}
+monte_carlo_sims <- probs %>% 
+  gather(key = person, value = prob, X:O) %>% 
+  group_by(key, person) %>% 
+  nest() %>% 
+  mutate(
+    ecdf_est = map(
+      data, 
+      ~suppressWarnings(nlm(ecdf_func, p = c(1, 5), x = .x$prob, y = .x$perc)$estimate)
+    ), 
+    sim_data = map(
+      ecdf_est, 
+      ~rbeta(10000, .x[[1]], .x[[2]]) %>% as_tibble()
+    )
+  ) %>% 
+  unnest(sim_data, .drop = TRUE) %>% 
+  # rownames_to_column() %>% 
+  group_by(key, person) %>% 
+  mutate(id = row_number()) %>%  
+  ungroup() %>% 
+  spread(key = person, value = value) %>% 
+  group_by(key) %>% 
+  nest() %>% 
+  ungroup() %>% 
+  spread(key = key, value = data) %>% 
+  mutate(
+    post_1 = map2(
+      prior,
+      lent_car,
+      ~update_prior(.x, .y)
+    ),
+    post_2 = map2(
+      post_1, 
+      ask_ride,
+      ~update_prior(.x, .y)
+    ),
+    post_3 = map2(
+      post_2, 
+      smoked, 
+      ~update_prior(.x, .y)
+    ),
+    post_4 = map2(
+      post_3,
+      j_confessed,
+      ~update_prior(.x, .y)
+    ),
+    post_5 = map2(
+      post_4,
+      call_x_friend,
+      ~update_prior(.x, .y)
+    )
+  ) 
+```
+
+```{r sims-setup}
+sims <- monte_carlo_sims %>% 
+  gather(key = key, value = output) %>% 
+  filter(!str_detect(key, "post")) %>% 
+  unnest(output) %>% 
+  gather(key = person, value = prob, J:X)
+
+sims_sum <- sims %>% 
+  group_by(key, person) %>% 
+  summarize(
+    fifth = quantile(prob, 0.05),
+    median = median(prob),
+    ninefive = quantile(prob, 0.95)
+  )
+```
+
+```{r prior-dists, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Prior distribution and likelihood distribution from 10,000 draws from fit beta distributions"}
+sims %>% 
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key, 
+                      levels = c("prior", "lent_car",
+                                 "ask_ride", "smoked",
+                                 "j_confessed", "call_x_friend"),
+                      labels = c("Prior Probability",
+                                 "X lent car to J",
+                                 "X asked victim for ride",
+                                 "X smoked and acted nervous",
+                                 "J confessed to X killing victim",
+                                 "X's phone used to call person only known by X"))) %>% 
+  ggplot(aes(prob, person, fill = person)) + 
+  facet_wrap(~key) + 
+  ggridges::geom_density_ridges2() +
+  theme_bw() +
+  labs(x = "Probability", 
+       y = "Suspect",
+       title = "Prior and liklihood distributions for monte carlo simulation",
+       subtitle = "Distributions were created by sampling 10,000 times from beta distribution fit to empirical CDF using minimzation optimizer") +
+  scale_fill_discrete(name = "Suspect")
+
+```
 
 
 
+```{r monte-results-setup}
+monte_unnested <- monte_carlo_sims %>% 
+  gather(key = key, value = output) %>% 
+  filter(str_detect(key, "prior|post")) %>% 
+  unnest(output) %>% 
+  gather(key = person, value = prob, J:X) 
+
+```
 
 
+```{r monte-fig, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Posterior probability distributions for each suspect's guilt given each subsequent piece of evidence produced"}
 
+monte_unnested %>% 
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key, 
+                      levels = c("prior", "post_1", "post_2",
+                                 "post_3", "post_4", "post_5"),
+                      labels = c("Prior probability",
+                                 "Prob[lent car|suspect]",
+                                 "Prob[asked for ride|suspect]",
+                                 "Prob[smoked|suspect]",
+                                 "Prob[J accussed X|suspect]",
+                                 "Prob[call to X friend|suspect]"))) %>% 
+  ggplot(aes(prob, person, fill = person)) + 
+  facet_wrap(~ key) + 
+  # geom_density(stat = "count")
+  ggridges::geom_density_ridges2() +
+  theme_bw() +
+  labs(y = "Suspect",
+       x = "Probability",
+       title = "Posterior probability distributions from Monte Carlo simulation after\nBayes' Rule is applied for each piece of evidence",
+       subtitle = "Posterior estimates are based on assumption that all pieces of evidence prior are true",
+       caption = "10,000 random samples from fit beta distributions were used to create prior distribution and each liklihood distribution\nbeta distributions were fit using a minimization optimizer to fit data to an empirical CDF") +
+  scale_fill_discrete(name = "Suspect")
+
+```
 
 
 \pagebreak
