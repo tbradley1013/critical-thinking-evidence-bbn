@@ -484,7 +484,7 @@ kable(evidence_5, format = "latex", booktabs = TRUE, align = "c", col.names = ev
 
 
 # Uncertainty Analysis
-As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]. The distributions of the random samples can be seen in Figure \ref{fig:prior-dists}
+As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]. The distributions of the random samples can be seen in Figure \ref{fig:prior-dists}.
 
 ```{r ecdf-func}
 ecdf_func <- function(x, y, p){
@@ -589,12 +589,24 @@ sims %>%
 
 ```
 
-In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:diagnosing-sims-fit}). All estimated values were within reasonable distance from the empirical values provided. 
+In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:diagnosing-sims-fit}). All estimated values were within reasonable distance from the empirical values provided.  
+
+
+```{r monte-results-setup}
+monte_unnested <- monte_carlo_sims %>% 
+  gather(key = key, value = output) %>% 
+  filter(str_detect(key, "prior|post")) %>% 
+  unnest(output) %>% 
+  gather(key = person, value = prob, J:X) 
+
+```
+
+After assessing the accuracy of the simulations, the monte carlo analysis was completed by calculating the posterior probabilities for each suspect for each of the five pieces of evidence presented (Figure \ref{fig:monte-fig}).  With each subsequent piece of evidence presented, it became more and more likely that X had committed the crime. In addition, the uncertainty in the posterior probabilities decreased for all suspects with each subsequent piece of evidence. For example, the prior probabilty that X was guilty had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`) and the final posterior probabilty that X was guilty, Prob[call to X friend|suspect], had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`). 
 
 ```{r diagnosing-sims-fit}
 asses_fit_cols <- text_spec(c("Suspect", "Evidence", "5th", "50th", "95th"), format = "latex", bold = TRUE)
 
-probs %>% 
+probs_table <- probs %>% 
   gather(key = person, value = prob, X:O) %>% 
   mutate(perc = case_when(perc == 0.05 ~ "five", 
                           perc == 0.5 ~ "fifty", 
@@ -622,21 +634,15 @@ probs %>%
                                  "Prob[call to X friend|suspect]"))) %>%
   arrange(person, key) %>% 
   select(person, key, five, fifty, ninefive) %>% 
-  rename(suspect = person) %>% 
-  kable(booktabs = TRUE, col.names = asses_fit_cols, format = "latex", 
-        longtable = TRUE, escape = FALSE,
-        caption = "Summary of Uncertainty Analysis") %>% 
-  # collapse_rows(columns = 1, latex_hline = "none") %>%
-  kable_styling(latex_options = c("repeat_header"))
-
+  rename(suspect = person)
 ```
 
-```{r monte-results-setup}
-monte_unnested <- monte_carlo_sims %>% 
-  gather(key = key, value = output) %>% 
-  filter(str_detect(key, "prior|post")) %>% 
-  unnest(output) %>% 
-  gather(key = person, value = prob, J:X) 
+```{r probs_table}
+
+  kable(probs_table, booktabs = TRUE, col.names = asses_fit_cols, format = "latex",  escape = FALSE,
+        align = c("c", "l", "c", "c", "c"),
+        caption = "Summary of Uncertainty Analysis", linesep = "") 
+  # collapse_rows(columns = 1, latex_hline = "none")
 
 ```
 
@@ -667,13 +673,11 @@ monte_unnested %>%
 
 ```
 
-After assessing the accuracy of the simulations, the monte carlo analysis was completed by calculating the posterior probabilities for each suspect for each of the five pieces of evidence presented (Figure \ref{fig:monte-fig}).  With each subsequent piece of evidence presented, it became more and more likely that X had committed the crime. In addition, the uncertainty in the posterior probabilities decreased for all suspects with each subsequent piece of evidence. For example, the prior probabilty that X was guilty had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`) and the final posterior probabilty that X was guilty, Prob[call to X friend|suspect], had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`). 
-
 
 ```{r uncertainty-summary}
 summary_table_cols <- text_spec(c("Suspect", "Probability", "Mean", "Median", "Std. Dev.", "95% CI"), format = "latex", bold = TRUE)
 
-monte_unnested %>%
+monte_unnested_table <- monte_unnested %>%
   mutate(person = factor(person, levels = c("X", "J", "O")),
          key = factor(key,
                       levels = c("prior", "post_1", "post_2",
@@ -695,14 +699,22 @@ monte_unnested %>%
   mutate_if(is.numeric, funs(if_else(. < 0.001, scales::scientific(.), as.character(round(., 3))))) %>%
   mutate(ci = str_c(ci_low, " - ", ci_high)) %>%
   select(person, key, mean, median, sd, ci) %>%
-  arrange(person, key) %>%
-  kable(booktabs = TRUE, 
+  arrange(person, key)
+```
+
+```{r monte_unnested_table}
+
+  kable(monte_unnested_table, booktabs = TRUE, 
         col.names = summary_table_cols,
-        format = "latex",
-        longtable = TRUE, escape = FALSE,
-        caption = "Difference between empirical quantiles and simulated data quantiles") %>% 
-  # collapse_rows(columns = 1, latex_hline = "none") %>%
-  kable_styling(latex_options = c("repeat_header"))
+        format = "latex", 
+        escape = FALSE,
+        align = c("c", "l", rep("c", 5)), linesep = "",
+        caption = "Difference between empirical quantiles and simulated data quantiles") 
+  # column_spec(1, width = "5em") %>% 
+  # column_spec(2, width = "13em") %>% 
+  # column_spec(3:6, width = "5em") %>% 
+  # row_spec(c(6,12), hline_after = TRUE) 
+  # collapse_rows(columns = 1, latex_hline = "none")
 
 ```
 
