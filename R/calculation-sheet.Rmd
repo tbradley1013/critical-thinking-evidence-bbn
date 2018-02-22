@@ -127,7 +127,7 @@ The prior values probablities were taken from an article published by the U.S. D
 **AATF:** J confessed that X murdered victim and J helped cover it up (accessory after the fact) (Evidence 4)  
 **phone call:**	X's cell was used to call someone only X knows when X claims J had the phone (Evidence 5)  
 
-###Prior Values  
+### Prior Values  
   
 P[X Guilty] - `r input %>% filter(key == "prior") %>% select(X)`  
 P[J Guilty] - `r input %>% filter(key == "prior") %>% select(J)`  
@@ -142,65 +142,77 @@ According to the Bureau of Justice's article "Female Victims of Violence:"
 
 Based on this, we set the prior probablity of X being guilty as `r input %>% filter(key == "prior") %>% select(X)` since he was the ex-boyfriend of the victim. Because J knew the victim but wasn't an intimate partner or very close with the victim, we set his prior probablity to `r input %>% filter(key == "prior") %>% select(J)` and we set the prior probablity for anyone else commiting the murder at   `r input %>% filter(key == "prior") %>% select(O)`.  
 
-###Evidence 1 
+### Evidence 1 
   
 P[lent car to J| X Guilty] - `r input %>% filter(key == "lent_car") %>% select(X)`  
 P[lent car to J| J Guilty] - `r input %>% filter(key == "lent_car") %>% select(J)`  
 P[lent car to J| O Guilty] - `r input %>% filter(key == "lent_car") %>% select(O)`  
   
-X said he lent his car to J so J could buy his girlfriend, Stephanie, a birthday present. X and Stephanie were good friends and he wanted her to be happy and have another gift. J maintained that X had lent him the phone and car to pick him up after X had killed the victim. The likelihood that X lent his car to J if X had did it seems possible. The birthday excuse is obviously easy to justify by knowing Stephanie's birthday, though X had said him and J weren’t great friends so it seems a little weird to lend him his car. Because of these reasons, I would put the likelihood that X lent J his car is X had done it at `r input %>% filter(key == "lent_car") %>% select(X)`. The probability that J had the and killed the victim seems like it could be higher. It seems like it could be a could way for him to blame X. However, it seems like this would have had to be a last minute decision from J then; he didn’t know he would have the car that day. J's motive is also less clear. I’ll put this probability at `r input %>% filter(key == "lent_car") %>% select(J)`. Finally, the probability that X lent his car to J if a third party had committed the crimes is simply that of the possibility of him loaning his car to J on any given day. Since they weren’t great friends, I’d put this probability at `r input %>% filter(key == "lent_car") %>% select(O)`. (@serial)  
+X said he lent his car to J so J could buy his girlfriend, Stephanie, a birthday present. X and Stephanie were good friends and he wanted her to be happy and have another gift. J maintained that X had lent him the phone and car to pick him up after X had killed the victim. The likelihood that X lent his car to J if X had did it seems possible. The birthday excuse is obviously easy to justify by knowing Stephanie's birthday, though X had said him and J weren’t great friends so it seems a little weird to lend him his car. Because of these reasons, I would put the likelihood that X lent J his car is X had done it at `r input %>% filter(key == "lent_car") %>% select(X)`. The probability that J had the and killed the victim seems like it could be higher. It seems like it could be a could way for him to blame X. However, it seems like this would have had to be a last minute decision from J then; he didn’t know he would have the car that day. J's motive is also less clear. I’ll put this probability at `r input %>% filter(key == "lent_car") %>% select(J)`. Finally, the probability that X lent his car to J if a third party had committed the crimes is simply that of the possibility of him loaning his car to J on any given day. Since they weren’t great friends, I’d put this probability at `r input %>% filter(key == "lent_car") %>% select(O)`. [@serial]  
 
-###Evidence 2
+### Evidence 2
   
 P[AFR| X Guilty] - `r input %>% filter(key == "ask_ride") %>% select(X)`  
 P[AFR| J Guilty] - `r input %>% filter(key == "ask_ride") %>% select(J)`  
 P[AFR| O Guilty] - `r input %>% filter(key == "ask_ride") %>% select(O)`  
   
-The probability that X had asked the victim for a ride if he committed the murder seems likely. They had just broken up and talking might be a good thing and they still maintained their friendship. However the victim would have known that X had a car so it might’ve seemed off, or X would’ve known that the victim had to somewhere to be after school. Therefore, the probability that X asked for a ride if he did it would be put at `r input %>% filter(key == "ask_ride") %>% select(X)`. Neither X or J deny that J had been lent the car that day. The likelihood of X asking for a ride if J had done it, or consequentially if any other person had done it, would be just the same as any day, say `r input %>% filter(key == "ask_ride") %>% select(O)`. However, if we throw any speculation into the idea that X knew anything at all about J’s plan, he might have wanted to be with her to try to help her, let’s increase it to `r input %>% filter(key == "ask_ride") %>% select(J)`. (Koeing, 2014)  
+The probability that X had asked the victim for a ride if he committed the murder seems likely. They had just broken up and talking might be a good thing and they still maintained their friendship. However the victim would have known that X had a car so it might’ve seemed off, or X would’ve known that the victim had to somewhere to be after school. Therefore, the probability that X asked for a ride if he did it would be put at `r input %>% filter(key == "ask_ride") %>% select(X)`. Neither X or J deny that J had been lent the car that day. The likelihood of X asking for a ride if J had done it, or consequentially if any other person had done it, would be just the same as any day, say `r input %>% filter(key == "ask_ride") %>% select(O)`. However, if we throw any speculation into the idea that X knew anything at all about J’s plan, he might have wanted to be with her to try to help her, let’s increase it to `r input %>% filter(key == "ask_ride") %>% select(J)`. [@serial]  
 
-###Evidence 3
+### Evidence 3
   
 P[smoked| X Guilty] - `r input %>% filter(key == "smoked") %>% select(X)`  
 P[smoked| J Guilty] - `r input %>% filter(key == "smoked") %>% select(J)`  
 P[smoked| O Guilty] - `r input %>% filter(key == "smoked") %>% select(O)`  
   
-X was naturally a first suspect in the case for being a recent ex-boyfriend of the victim. One could asertain, with X being the bright person he is, that he knew this. Additionally, he had been high and certainly talking to the police while high would be a surreal experience, especially when you were trying to not only hide that you were high but also maintain your innocence. Therefore, if X had done it he would of course be nervous, he isn’t a trained killer, though again he would’ve been nervous anyway. Put this at `r input %>% filter(key == "smoked") %>% select(X)`. Again, I feel like the likelihood of him being nervous while J or anyone else had done it would be roughly the same, again only increasing for J if X had known anything about it. X would’ve been anxious regardless because he was high and was worried about his friend. Say `r input %>% filter(key == "smoked") %>% select(J)` and `r input %>% filter(key == "smoked") %>% select(O)` again, respectively. (Koeing, 2014)  
+X was naturally a first suspect in the case for being a recent ex-boyfriend of the victim. One could asertain, with X being the bright person he is, that he knew this. Additionally, he had been high and certainly talking to the police while high would be a surreal experience, especially when you were trying to not only hide that you were high but also maintain your innocence. Therefore, if X had done it he would of course be nervous, he isn’t a trained killer, though again he would’ve been nervous anyway. Put this at `r input %>% filter(key == "smoked") %>% select(X)`. Again, I feel like the likelihood of him being nervous while J or anyone else had done it would be roughly the same, again only increasing for J if X had known anything about it. X would’ve been anxious regardless because he was high and was worried about his friend. Say `r input %>% filter(key == "smoked") %>% select(J)` and `r input %>% filter(key == "smoked") %>% select(O)` again, respectively. [@serial]   
 
-###Evidence 4
+### Evidence 4
   
 P[AATF| X Guilty] - `r input %>% filter(key == "j_confessed") %>% select(X)`  
 P[AATF| J Guilty] - `r input %>% filter(key == "j_confessed") %>% select(J)`  
 P[AATF| O Guilty] - `r input %>% filter(key == "j_confessed") %>% select(O)`  
   
-J gave testimony that X had killed the victim and that he made him help bury the body. J said he did it for fear X would tell the police about him selling weed and other illegal things. To me, it seems weird that J would be an accessory to murder to not get caught selling weed, yet he was so willing to come to the police with details after the fact. Because of this, the likelihood that J implicated X if X had done it would be the likelihood of J telling the truth while also implicating himself, put this at `r input %>% filter(key == "j_confessed") %>% select(X)`. Additionally, when considering J, there doesn’t seem to be much motive behind the thought that he had killed the victim. If we consider that J had killed the victim, he would be making this testimony almost completely up, which X, and potentially other witnesses to their day, would be able to deny or have an alibi for. Considering how risky this is, I would put this probability rather low, increasing only to account for the idea that he was trying to cover up for himself, say `r input %>% filter(key == "j_confessed") %>% select(J)`. The probability that J came up with this whole story is neither him or X were the killers seems completely far fetched. J was mostly likeable and seems out of character to completely fabricate this story to incriminate himself and a friend for something they did not do, put this at `r input %>% filter(key == "j_confessed") %>% select(O)`. (Koeing, 2014)  
+J gave testimony that X had killed the victim and that he made him help bury the body. J said he did it for fear X would tell the police about him selling weed and other illegal things. To me, it seems weird that J would be an accessory to murder to not get caught selling weed, yet he was so willing to come to the police with details after the fact. Because of this, the likelihood that J implicated X if X had done it would be the likelihood of J telling the truth while also implicating himself, put this at `r input %>% filter(key == "j_confessed") %>% select(X)`. Additionally, when considering J, there doesn’t seem to be much motive behind the thought that he had killed the victim. If we consider that J had killed the victim, he would be making this testimony almost completely up, which X, and potentially other witnesses to their day, would be able to deny or have an alibi for. Considering how risky this is, I would put this probability rather low, increasing only to account for the idea that he was trying to cover up for himself, say `r input %>% filter(key == "j_confessed") %>% select(J)`. The probability that J came up with this whole story is neither him or X were the killers seems completely far fetched. J was mostly likeable and seems out of character to completely fabricate this story to incriminate himself and a friend for something they did not do, put this at `r input %>% filter(key == "j_confessed") %>% select(O)`. [@serial]   
 
-###Evidence 5
+### Evidence 5
   
 P[phone call| X Guilty] - `r input %>% filter(key == "call_x_friend") %>% select(X)`  
 P[phone call| J Guilty] - `r input %>% filter(key == "call_x_friend") %>% select(J)`  
 P[phone call| O Guilty] - `r input %>% filter(key == "call_x_friend") %>% select(O)`  
   
-Finally, the call made to the number only X knew while J supposedly had the phone could go many different ways. You could subscribe to the belief that X killed her and he really had the phone and made the call. There’s also the possibility that J had hit her number on speed dial accidently, either while he was waiting for X for call him when X killed the victim or while he was the killer. Additionally, the receiver of the call had put them both together at the time of the call, though at a location where J worked even though he hadn’t started working there until later, meaning she could be misremembering or implicating X. Because of these reasons, I would put the likelihood that this call was made if X killed the victim at `r input %>% filter(key == "call_x_friend") %>% select(X)` (since it goes against the story that J tells), the probability that J had done it seems low since he didn’t know her, but her number had been on speedial, as `r input %>% filter(key == "call_x_friend") %>% select(J)`, and the probability that it was a buttdial again, but with someone else having committed it, very low as the probability of any accidental call, `r input %>% filter(key == "call_x_friend") %>% select(O)`. (Koeing, 2014)  
+Finally, the call made to the number only X knew while J supposedly had the phone could go many different ways. You could subscribe to the belief that X killed her and he really had the phone and made the call. There’s also the possibility that J had hit her number on speed dial accidently, either while he was waiting for X for call him when X killed the victim or while he was the killer. Additionally, the receiver of the call had put them both together at the time of the call, though at a location where J worked even though he hadn’t started working there until later, meaning she could be misremembering or implicating X. Because of these reasons, I would put the likelihood that this call was made if X killed the victim at `r input %>% filter(key == "call_x_friend") %>% select(X)` (since it goes against the story that J tells), the probability that J had done it seems low since he didn’t know her, but her number had been on speedial, as `r input %>% filter(key == "call_x_friend") %>% select(J)`, and the probability that it was a buttdial again, but with someone else having committed it, very low as the probability of any accidental call, `r input %>% filter(key == "call_x_friend") %>% select(O)`. [@serial]   
+
+\newpage
 
 # Equations
 
-*add descriptors to equations*
+The equations that follow are based on bayesian statistics. It works off of conditional probablity where we are looking at the probablity of each suspects guilt given each piece of evidence happens.  
 
+Lets take the equation used for evidence 1 below. The probablity that suspect $i$ is guilty given that X lent his car to J is calculated by mulitping the probablity that X lent his car to J, suspect $i$ is guilty and the prior probablity of suspect $i$ being guilty and dividing that by the sum for each suspect of the probablity that X lent his car to J, suspect $i$ is guilty mulitplied by the prior probablity of suspect $i$ being guilty. This gives you the posterior probablity for each suspects guilt for evidence 1. Since there are 5 pieces of evidence, this is done 5 times with the calculated posterior probablity for evidence 1 used for the prior probablity for evidence 2 and so on until you get the posterior probablity for evidence 5 which is the overall probablity of guilt for each suspect given all the evidence. *add reference*  
+
+### Evidence 1
 
 $$P[i|lent \; car \; to \; J] = \frac{P[lent \; car|i]*P[i]}{(P[lent \; car|X]*P[X]) + (P[lent \; car|J]*P[J]) + (P[lent \; car|O]*P[O])}$$
 
-
+### Evidence 2
 
 $$P[i|AFR] = \frac{P[AFR|i]*P[i]}{(P[AFR|X]*P[X]) + (P[AFR|J]*P[J]) + (P[AFR|O]*P[O])}$$
 
+### Evidence 3
 
 $$P[i|smoked] = \frac{P[smoked|i]*P[i]}{(P[smoked|X]*P[X]) + (P[smoked|J]*P[J]) + (P[smoked|O]*P[O])}$$
 
+### Evidence 4
 
 $$P[i|AATF] = \frac{P[AATF|i]*P[i]}{(P[AATF|X]*P[X]) + (P[AATF|J]*P[J]) + (P[AATF|O]*P[O])}$$
 
+### Evidence 5
+
 $$P[i|phone \; call] = \frac{P[phone \; call|i]*P[i]}{(P[phone \; call|X]*P[X]) + (P[phone \; call|J]*P[J]) + (P[phone \; call|O]*P[O])}$$
 
+*add information for diagnostic benefit*
+
+### Diagnostic Benefit
 
 $$Diagnostic \; Benefit = \frac{P[evidence|i]}{P[evidence|not \; i]}$$
 
@@ -391,7 +403,7 @@ evidence_5_col_names <- text_spec(c("Suspect", "P[i Guilty][note]", "P[phone cal
 
 ```
 
-In the following tables are the calculations using bayseian belief network statistics. The probability output from evidence 1 in Table \ref{tab:tab_evidence_1} is used as the prior probablity for evidence 2 in Table \ref{tab:tab_evidence_2} and so on for the calucaltions in evidence 3-5 in Tables \ref{tab:tab_evidence_3}-\ref{tab:tab_evidence_5}. The output probablity in Table \ref{tab:tab_evidence_5} is the overall probablity that each subject could have committed the murder given the evidence.  
+In the following tables are the calculations using bayseian statistics. An explanation of how the calculations were performed is in the previous section called Equations. The probability output from evidence 1 in Table \ref{tab:tab_evidence_1} is used as the prior probablity for evidence 2 in Table \ref{tab:tab_evidence_2} and so on for the calucaltions in evidence 3-5 in Tables \ref{tab:tab_evidence_3}-\ref{tab:tab_evidence_5}. The output probablity in Table \ref{tab:tab_evidence_5} is the overall probablity that each subject could have committed the murder given the evidence.  
 
 The calculated overall probablity that each suspect is guilty is:  
 P[X Guilty] - `r evidence_5 %>% filter(person == "X") %>% select(post_5)`  
