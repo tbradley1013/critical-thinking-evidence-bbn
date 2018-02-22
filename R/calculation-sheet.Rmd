@@ -117,7 +117,7 @@ input <- probs %>%
 
 The justification for all of the evidence probablities comes from knowledge obtained through Serial's season 1 podcast by Sarah Koenig in 2014. The podcast delved into the States case against X and provided context to the 5 pieces of evidence used in the Bayseian Belief Network calculations.  
 
-The prior values probablities were taken from an article published by the U.S. Department of Justice in 2009 on the statistics for "Female Victims of Violence."
+The prior probability values were taken from an article published by the U.S. Department of Justice in 2009 on the statistics for "Female Victims of Violence."
 
 ## Key
 
@@ -148,7 +148,7 @@ P[lent car to J| X Guilty] - `r input %>% filter(key == "lent_car") %>% select(X
 P[lent car to J| J Guilty] - `r input %>% filter(key == "lent_car") %>% select(J)`  
 P[lent car to J| O Guilty] - `r input %>% filter(key == "lent_car") %>% select(O)`  
   
-X said he lent his car to J so J could buy his girlfriend, Stephanie, a birthday present. X and Stephanie were good friends and he wanted her to be happy and have another gift. J maintained that X had lent him the phone and car to pick him up after X had killed the victim. The likelihood that X lent his car to J if X had did it seems possible. The birthday excuse is obviously easy to justify by knowing Stephanie's birthday, though X had said him and J weren’t great friends so it seems a little weird to lend him his car. Because of these reasons, I would put the likelihood that X lent J his car is X had done it at `r input %>% filter(key == "lent_car") %>% select(X)`. The probability that J had the and killed the victim seems like it could be higher. It seems like it could be a could way for him to blame X. However, it seems like this would have had to be a last minute decision from J then; he didn’t know he would have the car that day. J's motive is also less clear. I’ll put this probability at `r input %>% filter(key == "lent_car") %>% select(J)`. Finally, the probability that X lent his car to J if a third party had committed the crimes is simply that of the possibility of him loaning his car to J on any given day. Since they weren’t great friends, I’d put this probability at `r input %>% filter(key == "lent_car") %>% select(O)`. [@serial]  
+X said he lent his car to J so J could buy his girlfriend, Stephanie, a birthday present. X and Stephanie were good friends and he wanted her to be happy and have another gift. J maintained that X had lent him the phone and car to pick him up after X had killed the victim. The likelihood that X lent his car to J if X had did it seems possible. The birthday excuse is obviously easy to justify by knowing Stephanie's birthday, though X had said him and J weren’t great friends so it seems a little weird to lend him his car. Because of these reasons, I would put the likelihood that X lent J his car is X had done it at `r input %>% filter(key == "lent_car") %>% select(X)`. The probability that J had the and killed the victim seems like it could be higher. It seems like it could be a could way for him to blame X. However, it seems like this would have had to be a last minute decision from J then; he didn’t know he would have the car that day. J's motive is also less clear. I’ll put this probability at `r input %>% filter(key == "lent_car") %>% select(J)`. Finally, the probability that X lent his car to J if a third party had committed the crimes is simply that of the possibility of him loaning his car to J on any given day. Since they weren’t great friends, I’d put this probability at `r input %>% filter(key == "lent_car") %>% select(O)` [@serial]. 
 
 ### Evidence 2
   
@@ -156,7 +156,7 @@ P[AFR| X Guilty] - `r input %>% filter(key == "ask_ride") %>% select(X)`
 P[AFR| J Guilty] - `r input %>% filter(key == "ask_ride") %>% select(J)`  
 P[AFR| O Guilty] - `r input %>% filter(key == "ask_ride") %>% select(O)`  
   
-The probability that X had asked the victim for a ride if he committed the murder seems likely. They had just broken up and talking might be a good thing and they still maintained their friendship. However the victim would have known that X had a car so it might’ve seemed off, or X would’ve known that the victim had to somewhere to be after school. Therefore, the probability that X asked for a ride if he did it would be put at `r input %>% filter(key == "ask_ride") %>% select(X)`. Neither X or J deny that J had been lent the car that day. The likelihood of X asking for a ride if J had done it, or consequentially if any other person had done it, would be just the same as any day, say `r input %>% filter(key == "ask_ride") %>% select(O)`. However, if we throw any speculation into the idea that X knew anything at all about J’s plan, he might have wanted to be with her to try to help her, let’s increase it to `r input %>% filter(key == "ask_ride") %>% select(J)`. [@serial]  
+The probability that X had asked the victim for a ride if he committed the murder seems likely. They had just broken up and talking might be a good thing and they still maintained their friendship. However the victim would have known that X had a car so it might’ve seemed off, or X would’ve known that the victim had to somewhere to be after school. Therefore, the probability that X asked for a ride if he did it would be put at `r input %>% filter(key == "ask_ride") %>% select(X)`. Neither X or J deny that J had been lent the car that day. The likelihood of X asking for a ride if J had done it, or consequentially if any other person had done it, would be just the same as any day, say `r input %>% filter(key == "ask_ride") %>% select(O)`. However, if we throw any speculation into the idea that X knew anything at all about J’s plan, he might have wanted to be with her to try to help her, let’s increase it to `r input %>% filter(key == "ask_ride") %>% select(J)` [@serial]. 
 
 ### Evidence 3
   
@@ -164,7 +164,7 @@ P[smoked| X Guilty] - `r input %>% filter(key == "smoked") %>% select(X)`
 P[smoked| J Guilty] - `r input %>% filter(key == "smoked") %>% select(J)`  
 P[smoked| O Guilty] - `r input %>% filter(key == "smoked") %>% select(O)`  
   
-X was naturally a first suspect in the case for being a recent ex-boyfriend of the victim. One could asertain, with X being the bright person he is, that he knew this. Additionally, he had been high and certainly talking to the police while high would be a surreal experience, especially when you were trying to not only hide that you were high but also maintain your innocence. Therefore, if X had done it he would of course be nervous, he isn’t a trained killer, though again he would’ve been nervous anyway. Put this at `r input %>% filter(key == "smoked") %>% select(X)`. Again, I feel like the likelihood of him being nervous while J or anyone else had done it would be roughly the same, again only increasing for J if X had known anything about it. X would’ve been anxious regardless because he was high and was worried about his friend. Say `r input %>% filter(key == "smoked") %>% select(J)` and `r input %>% filter(key == "smoked") %>% select(O)` again, respectively. [@serial]   
+X was naturally a first suspect in the case for being a recent ex-boyfriend of the victim. One could asertain, with X being the bright person he is, that he knew this. Additionally, he had been high and certainly talking to the police while high would be a surreal experience, especially when you were trying to not only hide that you were high but also maintain your innocence. Therefore, if X had done it he would of course be nervous, he isn’t a trained killer, though again he would’ve been nervous anyway. Put this at `r input %>% filter(key == "smoked") %>% select(X)`. Again, I feel like the likelihood of him being nervous while J or anyone else had done it would be roughly the same, again only increasing for J if X had known anything about it. X would’ve been anxious regardless because he was high and was worried about his friend. Say `r input %>% filter(key == "smoked") %>% select(J)` and `r input %>% filter(key == "smoked") %>% select(O)` again, respectively [@serial]. 
 
 ### Evidence 4
   
@@ -172,7 +172,7 @@ P[AATF| X Guilty] - `r input %>% filter(key == "j_confessed") %>% select(X)`
 P[AATF| J Guilty] - `r input %>% filter(key == "j_confessed") %>% select(J)`  
 P[AATF| O Guilty] - `r input %>% filter(key == "j_confessed") %>% select(O)`  
   
-J gave testimony that X had killed the victim and that he made him help bury the body. J said he did it for fear X would tell the police about him selling weed and other illegal things. To me, it seems weird that J would be an accessory to murder to not get caught selling weed, yet he was so willing to come to the police with details after the fact. Because of this, the likelihood that J implicated X if X had done it would be the likelihood of J telling the truth while also implicating himself, put this at `r input %>% filter(key == "j_confessed") %>% select(X)`. Additionally, when considering J, there doesn’t seem to be much motive behind the thought that he had killed the victim. If we consider that J had killed the victim, he would be making this testimony almost completely up, which X, and potentially other witnesses to their day, would be able to deny or have an alibi for. Considering how risky this is, I would put this probability rather low, increasing only to account for the idea that he was trying to cover up for himself, say `r input %>% filter(key == "j_confessed") %>% select(J)`. The probability that J came up with this whole story is neither him or X were the killers seems completely far fetched. J was mostly likeable and seems out of character to completely fabricate this story to incriminate himself and a friend for something they did not do, put this at `r input %>% filter(key == "j_confessed") %>% select(O)`. [@serial]   
+J gave testimony that X had killed the victim and that he made him help bury the body. J said he did it for fear X would tell the police about him selling weed and other illegal things. To me, it seems weird that J would be an accessory to murder to not get caught selling weed, yet he was so willing to come to the police with details after the fact. Because of this, the likelihood that J implicated X if X had done it would be the likelihood of J telling the truth while also implicating himself, put this at `r input %>% filter(key == "j_confessed") %>% select(X)`. Additionally, when considering J, there doesn’t seem to be much motive behind the thought that he had killed the victim. If we consider that J had killed the victim, he would be making this testimony almost completely up, which X, and potentially other witnesses to their day, would be able to deny or have an alibi for. Considering how risky this is, I would put this probability rather low, increasing only to account for the idea that he was trying to cover up for himself, say `r input %>% filter(key == "j_confessed") %>% select(J)`. The probability that J came up with this whole story is neither him or X were the killers seems completely far fetched. J was mostly likeable and seems out of character to completely fabricate this story to incriminate himself and a friend for something they did not do, put this at `r input %>% filter(key == "j_confessed") %>% select(O)` [@serial].
 
 ### Evidence 5
   
@@ -484,7 +484,7 @@ kable(evidence_5, format = "latex", booktabs = TRUE, align = "c", col.names = ev
 
 
 # Uncertainty Analysis
-As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]. The distributions of the random samples can be seen in \ref{fig:prior-dists}
+As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Seriel podcast [-@serial]. The distributions of the random samples can be seen in Figure \ref{fig:prior-dists}
 
 ```{r ecdf-func}
 ecdf_func <- function(x, y, p){
@@ -564,19 +564,19 @@ sims_sum <- sims %>%
   )
 ```
 
-```{r prior-dists, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Prior distribution and likelihood distribution from 10,000 draws from fit beta distributions"}
+```{r prior-dists, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Prior distribution and likelihood distribution from 10,000 draws from fit beta distributions", dpi = 720, out.width = "7in", out.height = "4in"}
 sims %>% 
   mutate(person = factor(person, levels = c("X", "J", "O")),
          key = factor(key, 
                       levels = c("prior", "lent_car",
                                  "ask_ride", "smoked",
                                  "j_confessed", "call_x_friend"),
-                      labels = c("Prior Probability",
-                                 "X lent car to J",
-                                 "X asked victim for ride",
-                                 "X smoked and acted nervous",
-                                 "J confessed to X killing victim",
-                                 "X's phone used to call person only known by X"))) %>% 
+                      labels = c("Prior probability",
+                                 "Prob[lent car|suspect]",
+                                 "Prob[asked for ride|suspect]",
+                                 "Prob[smoked|suspect]",
+                                 "Prob[J accussed X|suspect]",
+                                 "Prob[call to X friend|suspect]"))) %>% 
   ggplot(aes(prob, person, fill = person)) + 
   facet_wrap(~key) + 
   ggridges::geom_density_ridges2() +
@@ -589,7 +589,11 @@ sims %>%
 
 ```
 
-```{r diagnosing-sims-fit, include = FALSE}
+In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:diagnosing-sims-fit}). All estimated values were within reasonable distance from the empirical values provided. 
+
+```{r diagnosing-sims-fit}
+asses_fit_cols <- text_spec(c("Suspect", "Evidence", "5th", "50th", "95th"), format = "latex", bold = TRUE)
+
 probs %>% 
   gather(key = person, value = prob, X:O) %>% 
   mutate(perc = case_when(perc == 0.05 ~ "five", 
@@ -600,8 +604,30 @@ probs %>%
               summarize(five = quantile(prob, 0.05), 
                         fifty = quantile(prob, 0.5), 
                         ninefive = quantile(prob, 0.95)) %>% 
-              gather(key = perc, value = prob_sims, five:ninefive)) %>% 
-  mutate(diff = prob - prob_sims)
+              gather(key = perc, value = prob_sims, five:ninefive),
+            by = c("perc", "key", "person")) %>% 
+  mutate(diff = prob - prob_sims) %>% 
+  select(perc, key, person, diff) %>% 
+  spread(key = perc, value = diff) %>% 
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key, 
+                      levels = c("prior", "lent_car",
+                                 "ask_ride", "smoked",
+                                 "j_confessed", "call_x_friend"),
+                      labels = c("Prior probability",
+                                 "Prob[lent car|suspect]",
+                                 "Prob[asked for ride|suspect]",
+                                 "Prob[smoked|suspect]",
+                                 "Prob[J accussed X|suspect]",
+                                 "Prob[call to X friend|suspect]"))) %>%
+  arrange(person, key) %>% 
+  select(person, key, five, fifty, ninefive) %>% 
+  rename(suspect = person) %>% 
+  kable(booktabs = TRUE, col.names = asses_fit_cols, format = "latex", 
+        longtable = TRUE, escape = FALSE,
+        caption = "Summary of Uncertainty Analysis") %>% 
+  # collapse_rows(columns = 1, latex_hline = "none") %>%
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
@@ -614,8 +640,7 @@ monte_unnested <- monte_carlo_sims %>%
 
 ```
 
-
-```{r monte-fig, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Posterior probability distributions for each suspect's guilt given each subsequent piece of evidence produced"}
+```{r monte-fig, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Posterior probability distributions for each suspect's guilt given each subsequent piece of evidence", dpi=720, out.width = "7in", out.height = "4in"}
 
 monte_unnested %>% 
   mutate(person = factor(person, levels = c("X", "J", "O")),
@@ -623,11 +648,11 @@ monte_unnested %>%
                       levels = c("prior", "post_1", "post_2",
                                  "post_3", "post_4", "post_5"),
                       labels = c("Prior probability",
-                                 "Prob[lent car|suspect]",
-                                 "Prob[asked for ride|suspect]",
-                                 "Prob[smoked|suspect]",
-                                 "Prob[J accussed X|suspect]",
-                                 "Prob[call to X friend|suspect]"))) %>% 
+                                 "Prob[suspect|lent car]",
+                                 "Prob[suspect|asked for ride]",
+                                 "Prob[suspect|smoked]",
+                                 "Prob[suspect|J accussed X]",
+                                 "Prob[suspect|call to X friend]"))) %>% 
   ggplot(aes(prob, person, fill = person)) + 
   facet_wrap(~ key) + 
   # geom_density(stat = "count")
@@ -642,6 +667,44 @@ monte_unnested %>%
 
 ```
 
+After assessing the accuracy of the simulations, the monte carlo analysis was completed by calculating the posterior probabilities for each suspect for each of the five pieces of evidence presented (Figure \ref{fig:monte-fig}).  With each subsequent piece of evidence presented, it became more and more likely that X had committed the crime. In addition, the uncertainty in the posterior probabilities decreased for all suspects with each subsequent piece of evidence. For example, the prior probabilty that X was guilty had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`) and the final posterior probabilty that X was guilty, Prob[call to X friend|suspect], had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`). 
+
+
+```{r uncertainty-summary}
+summary_table_cols <- text_spec(c("Suspect", "Probability", "Mean", "Median", "Std. Dev.", "95% CI"), format = "latex", bold = TRUE)
+
+monte_unnested %>%
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key,
+                      levels = c("prior", "post_1", "post_2",
+                                 "post_3", "post_4", "post_5"),
+                      labels = c("Prior probability",
+                                 "Prob[suspect|lent car]",
+                                 "Prob[suspect|asked for ride]",
+                                 "Prob[suspect|smoked]",
+                                 "Prob[suspect|J accussed X]",
+                                 "Prob[suspect|call to X friend]"))) %>%
+  group_by(key, person) %>%
+  summarize(
+    mean = mean(prob, na.rm = TRUE),
+    median = median(prob, na.rm = TRUE),
+    sd = sd(prob, na.rm = TRUE),
+    ci_low = quantile(prob, 0.025),
+    ci_high = quantile(prob, 0.975)
+  ) %>%
+  mutate_if(is.numeric, funs(if_else(. < 0.001, scales::scientific(.), as.character(round(., 3))))) %>%
+  mutate(ci = str_c(ci_low, " - ", ci_high)) %>%
+  select(person, key, mean, median, sd, ci) %>%
+  arrange(person, key) %>%
+  kable(booktabs = TRUE, 
+        col.names = summary_table_cols,
+        format = "latex",
+        longtable = TRUE, escape = FALSE,
+        caption = "Difference between empirical quantiles and simulated data quantiles") %>% 
+  # collapse_rows(columns = 1, latex_hline = "none") %>%
+  kable_styling(latex_options = c("repeat_header"))
+
+```
 
 \pagebreak
 
