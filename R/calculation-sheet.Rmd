@@ -555,7 +555,9 @@ sims %>%
 
 ```
 
-```{r diagnosing-sims-fit, include = FALSE}
+In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (\ref{tab:diagnosing-sims-fit}). 
+
+```{r diagnosing-sims-fit}
 probs %>% 
   gather(key = person, value = prob, X:O) %>% 
   mutate(perc = case_when(perc == 0.05 ~ "five", 
@@ -566,8 +568,25 @@ probs %>%
               summarize(five = quantile(prob, 0.05), 
                         fifty = quantile(prob, 0.5), 
                         ninefive = quantile(prob, 0.95)) %>% 
-              gather(key = perc, value = prob_sims, five:ninefive)) %>% 
-  mutate(diff = prob - prob_sims)
+              gather(key = perc, value = prob_sims, five:ninefive),
+            by = c("perc", "key", "person")) %>% 
+  mutate(diff = prob - prob_sims) %>% 
+  select(perc, key, person, diff) %>% 
+  spread(key = perc, value = diff) %>% 
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key, 
+                      levels = c("prior", "lent_car",
+                                 "ask_ride", "smoked",
+                                 "j_confessed", "call_x_friend"),
+                      labels = c("Prior Probability",
+                                 "X lent car to J",
+                                 "X asked victim for ride",
+                                 "X smoked and acted nervous",
+                                 "J confessed to X killing victim",
+                                 "X's phone used to call person only known by X"))) %>%
+  arrange(key, person) %>% 
+  rename(suspect = person) %>% 
+  kable(booktabs = TRUE, caption = "Difference between empirical quantiles and simulated data quantiles")
 
 ```
 
