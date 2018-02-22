@@ -559,12 +559,12 @@ sims %>%
                       levels = c("prior", "lent_car",
                                  "ask_ride", "smoked",
                                  "j_confessed", "call_x_friend"),
-                      labels = c("Prior Probability",
-                                 "X lent car to J",
-                                 "X asked victim for ride",
-                                 "X smoked and acted nervous",
-                                 "J confessed to X killing victim",
-                                 "X's phone used to call person only known by X"))) %>% 
+                      labels = c("Prior probability",
+                                 "Prob[lent car|suspect]",
+                                 "Prob[asked for ride|suspect]",
+                                 "Prob[smoked|suspect]",
+                                 "Prob[J accussed X|suspect]",
+                                 "Prob[call to X friend|suspect]"))) %>% 
   ggplot(aes(prob, person, fill = person)) + 
   facet_wrap(~key) + 
   ggridges::geom_density_ridges2() +
@@ -580,7 +580,7 @@ sims %>%
 In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:diagnosing-sims-fit}). All estimated values were within reasonable distance from the empirical values provided. 
 
 ```{r diagnosing-sims-fit}
-asses_fit_cols <- text_spec(c("Evidence", "Suspect", "5th", "50th", "95th"), format = "latex", bold = TRUE)
+asses_fit_cols <- text_spec(c("Suspect", "Evidence", "5th", "50th", "95th"), format = "latex", bold = TRUE)
 
 probs %>% 
   gather(key = person, value = prob, X:O) %>% 
@@ -602,18 +602,19 @@ probs %>%
                       levels = c("prior", "lent_car",
                                  "ask_ride", "smoked",
                                  "j_confessed", "call_x_friend"),
-                      labels = c("Prior Probability",
-                                 "X lent car to J",
-                                 "X asked victim for ride",
-                                 "X smoked and acted nervous",
-                                 "J confessed to X killing victim",
-                                 "X's phone used to call person only known by X"))) %>%
-  arrange(key, person) %>% 
+                      labels = c("Prior probability",
+                                 "Prob[lent car|suspect]",
+                                 "Prob[asked for ride|suspect]",
+                                 "Prob[smoked|suspect]",
+                                 "Prob[J accussed X|suspect]",
+                                 "Prob[call to X friend|suspect]"))) %>%
+  arrange(person, key) %>% 
+  select(person, key, five, fifty, ninefive) %>% 
   rename(suspect = person) %>% 
   kable(booktabs = TRUE, col.names = asses_fit_cols, format = "latex", 
         longtable = TRUE, escape = FALSE,
         caption = "Difference between empirical quantiles and simulated data quantiles") %>% 
-  collapse_rows(columns = 1, latex_hline = "major") %>%
+  # collapse_rows(columns = 1, latex_hline = "none") %>%
   kable_styling(latex_options = c("repeat_header"))
 
 ```
@@ -623,23 +624,23 @@ monte_unnested <- monte_carlo_sims %>%
   gather(key = key, value = output) %>% 
   filter(str_detect(key, "prior|post")) %>% 
   unnest(output) %>% 
-  gather(key = person, value = prob, J:X) %>% 
+  gather(key = person, value = prob, J:X) 
+
+```
+
+```{r monte-fig, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Posterior probability distributions for each suspect's guilt given each subsequent piece of evidence", dpi=720, out.width = "7in", out.height = "4in"}
+
+monte_unnested %>% 
   mutate(person = factor(person, levels = c("X", "J", "O")),
          key = factor(key, 
                       levels = c("prior", "post_1", "post_2",
                                  "post_3", "post_4", "post_5"),
                       labels = c("Prior probability",
-                                 "Prob[lent car|suspect]",
-                                 "Prob[asked for ride|suspect]",
-                                 "Prob[smoked|suspect]",
-                                 "Prob[J accussed X|suspect]",
-                                 "Prob[call to X friend|suspect]")))
-
-```
-
-```{r monte-fig, fig.width = 10, fig.height = 7, fig.align = "center", fig.cap = "Posterior probability distributions for each suspect's guilt given each subsequent piece of evidence produced", dpi=720, out.width = "7in", out.height = "4in"}
-
-monte_unnested %>% 
+                                 "Prob[suspect|lent car]",
+                                 "Prob[suspect|asked for ride]",
+                                 "Prob[suspect|smoked]",
+                                 "Prob[suspect|J accussed X]",
+                                 "Prob[suspect|call to X friend]"))) %>% 
   ggplot(aes(prob, person, fill = person)) + 
   facet_wrap(~ key) + 
   # geom_density(stat = "count")
@@ -654,28 +655,41 @@ monte_unnested %>%
 
 ```
 
-After assessing the accuracy of the simulations, the monte carlo analysis was completed by calculating the posterior probabilities for each suspect for each of the five pieces of evidence presented (Figure \ref{fig:monte-fig}).  With each subsequent piece of evidence presented, it became more and more likely that X had committed the crime. In addition, the uncertainty in the posterior probabilities decreased for all suspects with each subsequent piece of evidence. For example, the prior probabilty that X was guilty had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "Prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `monte_unnested %>% filter(str_detect(key, "Prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`) and the final posterior probabilty that X was guilty, Prob[call to X friend|suspect], had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "call to X"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "call to X"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`). 
+After assessing the accuracy of the simulations, the monte carlo analysis was completed by calculating the posterior probabilities for each suspect for each of the five pieces of evidence presented (Figure \ref{fig:monte-fig}).  With each subsequent piece of evidence presented, it became more and more likely that X had committed the crime. In addition, the uncertainty in the posterior probabilities decreased for all suspects with each subsequent piece of evidence. For example, the prior probabilty that X was guilty had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "prior"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`) and the final posterior probabilty that X was guilty, Prob[call to X friend|suspect], had a 95% confidence interval of (`r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.025) %>% round(3)` - `r monte_unnested %>% filter(str_detect(key, "post_5"), str_detect(person, "X")) %>% pull(prob) %>% quantile(0.975) %>% round(3)`). 
 
 
 ```{r uncertainty-summary}
-summary_table_cols <- text_spec(c("Probability", "Suspect", "Median", "Std. Dev.", "95% CI"), format = "latex", bold = TRUE)
+summary_table_cols <- text_spec(c("Suspect", "Probability", "Mean", "Median", "Std. Dev.", "95% CI"), format = "latex", bold = TRUE)
 
-monte_unnested %>% 
-  group_by(key, person) %>% 
+monte_unnested %>%
+  mutate(person = factor(person, levels = c("X", "J", "O")),
+         key = factor(key,
+                      levels = c("prior", "post_1", "post_2",
+                                 "post_3", "post_4", "post_5"),
+                      labels = c("Prior probability",
+                                 "Prob[suspect|lent car]",
+                                 "Prob[suspect|asked for ride]",
+                                 "Prob[suspect|smoked]",
+                                 "Prob[suspect|J accussed X]",
+                                 "Prob[suspect|call to X friend]"))) %>%
+  group_by(key, person) %>%
   summarize(
+    mean = mean(prob, na.rm = TRUE),
     median = median(prob, na.rm = TRUE),
     sd = sd(prob, na.rm = TRUE),
     ci_low = quantile(prob, 0.025),
     ci_high = quantile(prob, 0.975)
-  ) %>% 
-  mutate_if(is.numeric, funs(if_else(. < 0.001, scales::scientific(.), as.character(round(., 3))))) %>% 
-  mutate(ci = str_c(ci_low, " - ", ci_high)) %>% 
-  select(-c(ci_low, ci_high)) %>% 
-  arrange(key, person) %>% 
-  kable(booktaps = TRUE, escape = FALSE, format = "latex", 
-        col.names = summary_table_cols, longtable = TRUE,
-        caption = "Uncertainty Analysis Results") %>% 
-  collapse_rows(columns = 1, latex_hline = "major") %>%
+  ) %>%
+  mutate_if(is.numeric, funs(if_else(. < 0.001, scales::scientific(.), as.character(round(., 3))))) %>%
+  mutate(ci = str_c(ci_low, " - ", ci_high)) %>%
+  select(person, key, mean, median, sd, ci) %>%
+  arrange(person, key) %>%
+  kable(booktabs = TRUE, 
+        col.names = summary_table_cols,
+        format = "latex",
+        longtable = TRUE, escape = FALSE,
+        caption = "Difference between empirical quantiles and simulated data quantiles") %>% 
+  # collapse_rows(columns = 1, latex_hline = "none") %>%
   kable_styling(latex_options = c("repeat_header"))
 
 ```
