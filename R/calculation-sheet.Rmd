@@ -613,7 +613,7 @@ probs %>%
   rename(suspect = person) %>% 
   kable(booktabs = TRUE, col.names = asses_fit_cols, format = "latex", 
         longtable = TRUE, escape = FALSE,
-        caption = "Difference between empirical quantiles and simulated data quantiles") %>% 
+        caption = "Summary of Uncertainty Analysis") %>% 
   # collapse_rows(columns = 1, latex_hline = "none") %>%
   kable_styling(latex_options = c("repeat_header"))
 
