@@ -190,6 +190,8 @@ The equations that follow are based on Bayes Theorem. It works off of conditiona
 
 Lets take the equation used for evidence 1 below. The probablity that suspect $i$ is guilty given that X lent his car to J is calculated by mulitping the probablity that X lent his car to J, suspect $i$ is guilty and the prior probablity of suspect $i$ being guilty and dividing that by the sum for each suspect of the probablity that X lent his car to J, suspect $i$ is guilty mulitplied by the prior probablity of suspect $i$ being guilty. This gives you the posterior probablity for each suspects guilt for evidence 1. Since there are 5 pieces of evidence, this is done 5 times with the calculated posterior probablity for evidence 1 used for the prior probablity for evidence 2 and the posterior probablity for evidence 2 is the prior probablity for evidence 3 and so on until you get the posterior probablity for evidence 5 which is the overall probablity of guilt for each suspect given all the evidence [@swri].  
 
+The diagnostic benefit equation is a way to evaulate the evidence and its effect on the probablity for the guilt of suspect $i$. It takes the ratio of the probablity of the evidence, $i$ is guilty divided by the probablity of the evidence, $i$ is not guilty [@assignment].
+
 ### Evidence 1
 
 $$P[i|lent \; car \; to \; J] = \frac{P[lent \; car|i]*P[i]}{(P[lent \; car|X]*P[X]) + (P[lent \; car|J]*P[J]) + (P[lent \; car|O]*P[O])}$$
@@ -209,8 +211,6 @@ $$P[i|AATF] = \frac{P[AATF|i]*P[i]}{(P[AATF|X]*P[X]) + (P[AATF|J]*P[J]) + (P[AAT
 ### Evidence 5
 
 $$P[i|phone \; call] = \frac{P[phone \; call|i]*P[i]}{(P[phone \; call|X]*P[X]) + (P[phone \; call|J]*P[J]) + (P[phone \; call|O]*P[O])}$$
-
-*add information for diagnostic benefit*
 
 ### Diagnostic Benefit
 
@@ -410,7 +410,7 @@ P[X Guilty] - `r evidence_5 %>% filter(person == "X") %>% select(post_5)`
 P[J Guilty] - `r evidence_5 %>% filter(person == "J") %>% select(post_5)`  
 P[O Guilty] - `r evidence_5 %>% filter(person == "O") %>% select(post_5)`  
 
-*include information about diagnostic benefit*  
+Evidence 2 (Table \ref{tab:tab_evidence_2}) has the greatest diagnostic benefit for the probablity that X committed the crime, while Evidence 1 (Table \ref{tab:tab_evidence_1}) has the greatest diagnostic benefit for both J and O.  
 
 ```{r tab_evidence_1}
 
@@ -588,7 +588,7 @@ sims %>%
 
 ```
 
-In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:diagnosing-sims-fit}). All estimated values were within reasonable distance from the empirical values provided.  
+In order to assess the fit, the 5^th^, 50^th^, and the 95^th^ percentiles were taken from each of the simulated distributions and compared to the empirical values (Table \ref{tab:probs_table}). All estimated values were within reasonable distance from the empirical values provided.  
 
 
 ```{r monte-results-setup}
