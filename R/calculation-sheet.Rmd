@@ -186,9 +186,9 @@ Finally, the call made to the number only X knew while J supposedly had the phon
 
 # Equations
 
-The equations that follow are based on bayesian statistics. It works off of conditional probablity where we are looking at the probablity of each suspects guilt given each piece of evidence happens.  
+The equations that follow are based on Bayes Theorem. It works off of conditional probablity where we are looking at the probablity of each suspects guilt given each piece of evidence happens.  
 
-Lets take the equation used for evidence 1 below. The probablity that suspect $i$ is guilty given that X lent his car to J is calculated by mulitping the probablity that X lent his car to J, suspect $i$ is guilty and the prior probablity of suspect $i$ being guilty and dividing that by the sum for each suspect of the probablity that X lent his car to J, suspect $i$ is guilty mulitplied by the prior probablity of suspect $i$ being guilty. This gives you the posterior probablity for each suspects guilt for evidence 1. Since there are 5 pieces of evidence, this is done 5 times with the calculated posterior probablity for evidence 1 used for the prior probablity for evidence 2 and so on until you get the posterior probablity for evidence 5 which is the overall probablity of guilt for each suspect given all the evidence. *add reference*  
+Lets take the equation used for evidence 1 below. The probablity that suspect $i$ is guilty given that X lent his car to J is calculated by mulitping the probablity that X lent his car to J, suspect $i$ is guilty and the prior probablity of suspect $i$ being guilty and dividing that by the sum for each suspect of the probablity that X lent his car to J, suspect $i$ is guilty mulitplied by the prior probablity of suspect $i$ being guilty. This gives you the posterior probablity for each suspects guilt for evidence 1. Since there are 5 pieces of evidence, this is done 5 times with the calculated posterior probablity for evidence 1 used for the prior probablity for evidence 2 and the posterior probablity for evidence 2 is the prior probablity for evidence 3 and so on until you get the posterior probablity for evidence 5 which is the overall probablity of guilt for each suspect given all the evidence [@swri].  
 
 ### Evidence 1
 
@@ -403,9 +403,9 @@ evidence_5_col_names <- text_spec(c("Suspect", "P[i Guilty][note]", "P[phone cal
 
 ```
 
-In the following tables are the calculations using bayseian statistics. An explanation of how the calculations were performed is in the previous section called Equations. The probability output from evidence 1 in Table \ref{tab:tab_evidence_1} is used as the prior probablity for evidence 2 in Table \ref{tab:tab_evidence_2} and so on for the calucaltions in evidence 3-5 in Tables \ref{tab:tab_evidence_3}-\ref{tab:tab_evidence_5}. The output probablity in Table \ref{tab:tab_evidence_5} is the overall probablity that each subject could have committed the murder given the evidence.  
+Tables \ref{tab:tab_evidence_1}-\ref{tab:tab_evidence_5} show the input and output for each piece of evidence using Bayes Theorem for the posterior probablity. An explanation of how the calculations were performed is in the previous section called Equations. The probability output from evidence 1 in Table \ref{tab:tab_evidence_1} is used as the prior probablity for evidence 2 in Table \ref{tab:tab_evidence_2} and so on for the calucaltions in evidence 3-5 in Tables \ref{tab:tab_evidence_3}-\ref{tab:tab_evidence_5}. The output probablity in Table \ref{tab:tab_evidence_5} is the overall probablity that each subject could have committed the murder given the evidence.  
 
-The calculated overall probablity that each suspect is guilty is:  
+The overall calculated probablity that each suspect is guilty is:  
 P[X Guilty] - `r evidence_5 %>% filter(person == "X") %>% select(post_5)`  
 P[J Guilty] - `r evidence_5 %>% filter(person == "J") %>% select(post_5)`  
 P[O Guilty] - `r evidence_5 %>% filter(person == "O") %>% select(post_5)`  
@@ -424,7 +424,6 @@ kable(evidence_1, format = "latex", booktabs = TRUE, align = "c",
   column_spec(4, width = "10em") %>%
   kable_styling(position = "center", latex_options = "HOLD_position")
 ```
-
 ```{r tab_evidence_2}
 kable(evidence_2, format = "latex", booktabs = TRUE, align = "c", col.names = evidence_2_col_names,
       escape = FALSE, caption = "Evidence 2 Probablities") %>%
