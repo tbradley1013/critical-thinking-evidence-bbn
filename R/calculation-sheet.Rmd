@@ -190,7 +190,7 @@ The equations that follow are based on Bayes Theorem. It works off of conditiona
 
 Let's take the equation used for evidence 1 below. The probablity that suspect $i$ is guilty given that X lent his car to J is calculated by mulitping the probablity that X lent his car to J given suspect $i$ is guilty and the prior probablity of suspect $i$ being guilty and dividing that by the sum for each suspect of the probablity that X lent his car to J given suspect $i$ is guilty mulitplied by the prior probablity of suspect $i$ being guilty. This gives you the posterior probablity for each suspects guilt for evidence 1. Since there are 5 pieces of evidence, this is done 5 times with the calculated posterior probablity for evidence 1 used for the prior probablity for evidence 2 and the posterior probablity for evidence 2 is the prior probablity for evidence 3 and so on until you get the posterior probablity for evidence 5 which is the overall probablity of guilt for each suspect given all the evidence [@swri].  
 
-The diagnostic benefit equation is a way to evaulate the evidence and its effect on the probablity for the guilt of suspect $i$. It takes the ratio of the probablity of the evidence, $i$ is guilty divided by the probablity of the evidence, $i$ is not guilty [@assignment].
+The diagnostic benefit equation is a way to evaulate the evidence and its effect on the probablity for the guilt of suspect $i$. It takes the ratio of the probablity of the evidence given $i$ is guilty divided by the probablity of the evidence given $i$ is not guilty [@assignment].
 
 ### Evidence 1
 
@@ -640,7 +640,7 @@ probs_table <- probs %>%
 
   kable(probs_table, booktabs = TRUE, col.names = asses_fit_cols, format = "latex",  escape = FALSE,
         align = c("c", "l", "c", "c", "c"),
-        caption = "Summary of Uncertainty Analysis", linesep = "") 
+        caption = "Difference between empirical quantiles and simulated data quantiles", linesep = "") 
   # collapse_rows(columns = 1, latex_hline = "none")
 
 ```
@@ -708,7 +708,7 @@ monte_unnested_table <- monte_unnested %>%
         format = "latex", 
         escape = FALSE,
         align = c("c", "l", rep("c", 5)), linesep = "",
-        caption = "Difference between empirical quantiles and simulated data quantiles") 
+        caption = "Summary of Uncertainty Analysis") 
   # column_spec(1, width = "5em") %>% 
   # column_spec(2, width = "13em") %>% 
   # column_spec(3:6, width = "5em") %>% 
