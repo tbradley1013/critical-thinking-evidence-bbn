@@ -1,7 +1,7 @@
 ---
 title:  | 
   | Critical Thinking about Evidence 
-  | (Baysesian Belief Network) 
+  | (Bayesian Belief Network) 
 subtitle: "Calculation Sheet"
 author: "Nicola Horscroft, Tyler Bradley, Charlotte Navrot, & Sarina Tufano"
 date: "February 26, 2018"
@@ -483,7 +483,7 @@ kable(evidence_5, format = "latex", booktabs = TRUE, align = "c", col.names = ev
 
 
 # Uncertainty Analysis
-As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Serial podcast [-@serial]. The distributions of the random samples can be seen in Figure \ref{fig:prior-dists}.
+As a part of this analysis, an uncertainty analysis is appropriate to see how uncertainty is associated with the probability of guilt for each suspect (X, J, and O) after each piece of evidence was considered. In order to accomplish this, a monte carlo simulation was performed for each of the steps in the bayesian belief network [@swri]. To perform the monte carlo simulation, random data had to be generated. The random data were generated for the prior probabilities of guilt for each suspect and the likelihood of each evidence being true given a particular suspect was guilty by fitting an empirical CDF to the data. The CDF that was used was a function of the beta distributions, which has the desirable characteristics in this case of being bounded by 0 and 1. The CDF was fit using 5^th^, 50^th^, and 95^th^ percentiles for each probability that were determined by the authors after listening and discussing the Serial podcast [-@serial]. The distributions of the random samples can be seen in Figure \ref{fig:prior-dists}.
 
 ```{r ecdf-func}
 ecdf_func <- function(x, y, p){
