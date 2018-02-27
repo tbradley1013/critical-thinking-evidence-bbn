@@ -115,7 +115,7 @@ input <- probs %>%
 
 # Justification
 
-The justification for all of the evidence probablities comes from knowledge obtained through Serial's season 1 podcast by Sarah Koenig in 2014. The podcast delved into the States case against X and provided context to the 5 pieces of evidence used in the Bayseian Belief Network calculations.  
+The justification for all of the evidence probablities comes from knowledge obtained through Serial's season 1 podcast by Sarah Koenig in 2014. The podcast delved into the States case against X and provided context to the 5 pieces of evidence used in the Bayesian Belief Network calculations.  
 
 The prior probability values were taken from an article published by the U.S. Department of Justice in 2009 on the statistics for "Female Victims of Violence."
 
